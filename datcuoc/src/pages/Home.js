@@ -9,9 +9,11 @@ import {
   formatMultiplier,
 } from '../data';
 
-const Home = ({ playerName, setPlayerName }) => {
+const Home = ({ playerName, setPlayerName, history }) => {
   const navigate = useNavigate();
   const canPlay = playerName.trim() !== '';
+
+  const best = history.reduce((top, item) => (!top || item.finalScore > top.finalScore ? item : top), null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +25,12 @@ const Home = ({ playerName, setPlayerName }) => {
   return (
     <section>
       <h1>Đặt cược kiến thức</h1>
+
+      {best && (
+        <p className="record">
+          Kỷ lục: {formatScore(best.finalScore)} – {best.name}
+        </p>
+      )}
 
       <div className="card">
         <h3>Luật chơi</h3>
@@ -39,6 +47,7 @@ const Home = ({ playerName, setPlayerName }) => {
             đúng mức cược.
           </li>
           <li>Còn dưới {formatScore(MIN_BET)} là cháy túi, lượt chơi kết thúc.</li>
+          <li>Có 3 quyền trợ giúp, mỗi quyền dùng một lần: Xem trước, Bảo hiểm, Gợi ý.</li>
         </ul>
       </div>
 
