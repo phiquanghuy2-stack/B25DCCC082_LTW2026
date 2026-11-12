@@ -3,6 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import Layout from './components/Layout';
+import Home from './pages/Home';
+import Play from './pages/Play';
+import Result from './pages/Result';
 import QuestionBank from './pages/QuestionBank';
 import QuestionDetail from './pages/QuestionDetail';
 import NotFound from './pages/NotFound';
@@ -13,6 +16,7 @@ const App = () => {
   const [error, setError] = useState('');
   const [bankFilters, setBankFilters] = useState({ levels: [1, 2, 3], onlyBookmarked: false, keyword: '' });
   const [bookmarks, setBookmarks] = useState([]);
+  const [playerName, setPlayerName] = useState('');
 
   // Mounting: gọi API lấy câu hỏi, cleanup bằng abort()
   useEffect(() => {
@@ -38,9 +42,9 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout loading={loading} error={error} />}>
-        <Route index element={<h2>Trang chủ</h2>} />
-        <Route path="play" element={<h2>Màn hình chơi</h2>} />
-        <Route path="result" element={<h2>Kết quả</h2>} />
+        <Route index element={<Home playerName={playerName} setPlayerName={setPlayerName} />} />
+        <Route path="play" element={<Play questions={questions} playerName={playerName} />} />
+        <Route path="result" element={<Result />} />
         <Route path="history" element={<h2>Lịch sử</h2>} />
         <Route
           path="questions"
